@@ -16,12 +16,12 @@ public class imageOverlay {
         /**
          * Read a background image
          */
-        BufferedImage bgImage = readImage("C:/temp/myBGImage.jpg");
+        BufferedImage bgImage = readImage("/home/shobhit/Pictures/test.jpg");
  
         /**
          * Read a foreground image
          */
-        BufferedImage fgImage = readImage("C:/temp/myFGImage.jpg");
+        BufferedImage fgImage = readImage("/home/shobhit/Pictures/test_blur.jpg");
  
         /**
          * Do the overlay of foreground image on background image
@@ -32,7 +32,7 @@ public class imageOverlay {
          * Write the overlayed image back to file
          */
         if (overlayedImage != null){
-            writeImage(overlayedImage, "C:/temp/overLayedImage.jpg", "JPG");
+            writeImage(overlayedImage, "/home/shobhit/Pictures/test_overLayedImage.jpg", "JPG");
             System.out.println("Overlay Completed...");
         }else
             System.out.println("Problem With Overlay...");
