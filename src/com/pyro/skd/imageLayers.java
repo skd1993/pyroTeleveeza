@@ -3,10 +3,7 @@ package com.pyro.skd;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
 
@@ -21,8 +18,9 @@ public class imageLayers {
 
 	private JFrame frame = new JFrame();
     private JLayeredPane lpane = new JLayeredPane();
-    private JPanel panelBlue = new JPanel();
-    private JPanel panelGreen = new JPanel();
+    private JPanel panel1 = new JPanel();
+    private JPanel panel2 = new JPanel();
+    private JPanel panel3 = new JPanel();
     private BufferedImage bgImage1 = readImage("/home/shobhit/Pictures/test.jpg");
     private BufferedImage bgImage2 = readImage("/home/shobhit/Pictures/test_blur.jpg");
     
@@ -32,20 +30,26 @@ public class imageLayers {
         frame.add(lpane, BorderLayout.CENTER);	//add the settings to frmae
          
         //panelBlue.setBackground(Color.BLUE);	//set color to pane 1
-        panelBlue.setBounds(0, 0, 1024, 680);	//set size of pane 1
+        panel1.setBounds(0, 0, 1024, 680);	//set size of pane 1
         JLabel picLabel1 = new JLabel(new ImageIcon(bgImage1));
-        panelBlue.add(picLabel1);
-        panelBlue.setOpaque(true);	//fill all pixels
+        panel1.add(picLabel1);
+        panel1.setOpaque(true);	//fill all pixels
         
         //panelGreen.setBackground(Color.GREEN);	
-        panelGreen.setBounds(0, 0, 1024, 680);
+        panel2.setBounds(0, 0, 1024, 680);
         JLabel picLabel2 = new JLabel(new ImageIcon(bgImage2));
-        panelGreen.add(picLabel2);
-        panelGreen.setOpaque(true);
+        panel2.add(picLabel2);
+        panel2.setOpaque(true);
+        
+        //transparent panel
+        panel3.setBackground(Color.WHITE);
+        panel3.setBounds(0, 0, 1024, 680);
+        panel3.setOpaque(false);	//false adds transparency
         
         lpane.setBounds(0, 0, 1024, 680);	//set the size for layered pane
-        lpane.add(panelBlue, new Integer(0), 0);	//add pane 1 to layered pane; bottom
-        lpane.add(panelGreen, new Integer(1), 0);	//add pane 2 to layered pane; top
+        lpane.add(panel1, new Integer(0), 0);	//add pane 1 to layered pane; bottom
+        lpane.add(panel2, new Integer(1), 0);	//add pane 2 to layered pane; top
+        lpane.add(panel3, new Integer(2), 0);	//add pane 3 to layered pane; top most
         frame.pack();	//size the window to fit the size of its layout and sub components
         
         frame.setVisible(true);	//show the window
