@@ -17,9 +17,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-public class imageLayers {
+public class splitImage1 {
 
     private JFrame frame;
     private JLabel[] labels;
@@ -39,7 +40,7 @@ public class imageLayers {
 
             @Override
             public void run() {
-                new imageLayers().createAndShowUI();
+                new splitImage1().createAndShowUI();
             }
         });
     }
@@ -82,13 +83,13 @@ public class imageLayers {
         try {
             fis = new FileInputStream(file);
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(imageLayers.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(splitImage1.class.getName()).log(Level.SEVERE, null, ex);
         }
         BufferedImage image = null;
         try {
             image = ImageIO.read(fis); //reading the image file
         } catch (IOException ex) {
-            Logger.getLogger(imageLayers.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(splitImage1.class.getName()).log(Level.SEVERE, null, ex);
         }
         chunkWidth = image.getWidth() / cols; // determines the chunk width and height
         chunkHeight = image.getHeight() / rows;
