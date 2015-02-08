@@ -1,5 +1,6 @@
 package com.pyro.skd;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
@@ -13,26 +14,32 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 
 public class imageLayers {
 
-    private JFrame frame;
-    private JLabel[] labels;
-    private JLayeredPane lpane;
-    private static final String imagePathTrue = "/home/shobhit/Pictures/test.jpg";
-    private static final String imagePathBlur = "/home/shobhit/Pictures/test_blur.jpg";
-    private final int rows = 4; //You should decide the values for rows and cols variables
-    private final int cols = 4;
-    private final int chunks = rows * cols;
-    private final int SPACING = 0;//spacing between split images
-    private int chunkWidth;
-    private int chunkHeight;
-    private int z = 0;
+    static JFrame frame;
+    static JLabel[] labelsTrue;
+    static JLabel[] labelsBlur;
+    static JPanel panel;
+    static JLayeredPane lpane;
+    static final String imagePathTrue = "/home/shobhit/Pictures/test.jpg";
+    static final String imagePathBlur = "/home/shobhit/Pictures/test_blur.jpg";
+    final static int rows = 4; //You should decide the values for rows and cols variables
+    final static int cols = 4;
+    final static int chunks = rows * cols;
+    final static int SPACING = 0;//spacing between split images
+    static int chunkWidth;
+    static int chunkHeight;
+    static int z = 0;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -46,19 +53,31 @@ public class imageLayers {
 
     private void createAndShowUI() {
         frame = new JFrame("Test");
-        frame.getContentPane().setLayout(new GridLayout(rows, cols, SPACING, SPACING));
+        //frame.getContentPane().setLayout(new GridLayout(rows, cols, SPACING, SPACING));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         lpane = new JLayeredPane();
         lpane.setPreferredSize(new Dimension(1024, 680));
-        initComponents(imagePathTrue, lpane);
-        initComponents(imagePathBlur, lpane);
+        panel = new JPanel();
+        panel.setPreferredSize(new Dimension(1024, 680));
+        panel.setLayout(new GridLayout(rows, cols));
+        panel.setBounds(0, 0, 1024, 680);
+        panel.setBackground(Color.red);
+        panel.setVisible(true);
+        lpane.add(panel, new Integer(Integer.MIN_VALUE), 0);
+        
+        initComponents(imagePathTrue, lpane, labelsTrue);
+        initComponents(imagePathBlur, lpane, labelsBlur);
+        System.out.println(lpane.getComponents().length);
+        System.out.println(lpane.getComponent(0));//panel
+        
+        //lpane.setLayer(lpane.getComponent(2), Integer.MAX_VALUE);
         frame.add(lpane);
         frame.setResizable(false);
         frame.pack();
         frame.setVisible(true);
     }
 
-    private void initComponents(String imagePath, JLayeredPane lpane) {
+    private void initComponents(String imagePath, JLayeredPane lpane, JLabel[] labels) {
     	BufferedImage[] imgs = getImages(imagePath);
     	labels = new JLabel[imgs.length];
     	//create JLabels with split images and add to frame contentPane
@@ -67,14 +86,17 @@ public class imageLayers {
         }
         System.out.println(imgs.length);
         int j = 0;
-        for (int i = 0; i < imgs.length; i++) //int i = imgs.length - 1; i >= 0; i--
+        for (int i = 0; i < imgs.length; i++)
         {
         	labels[i].setBounds((i%rows)*chunkWidth, (j++/cols)*chunkHeight, chunkWidth, chunkHeight);
+        	labels[i].setBackground(Color.blue);
+        	labels[i].setOpaque(true);//no change
+        	
+        	//labels[i].set
         	lpane.add(labels[i], new Integer(z), 0);
-        	//System.out.println(i+". "+z);
         }
-        //System.out.println(lpane.getComponent(0));
     }
+    
 
     private BufferedImage[] getImages(String imagePath) {
         File file = new File(imagePath);
