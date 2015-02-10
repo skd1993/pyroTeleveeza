@@ -15,20 +15,24 @@ public class randomGlow implements ActionListener {
 
 	private int chunks;
 	private int chances = 3;
-	private int currLabel = randInt(0, chunks - 1);
-	private int prevLabel = randInt(0, chunks - 1);
-	private int speed;
-	private JLabel labelsBlur[];
-	static JLayeredPane lpane;
+	private int currLabel;
+	private int prevLabel;
+	private int speed = 2000;
+	private JLabel imageLabels[];
+	private static JLayeredPane lpane;
 	private JButton funcButton;
 	private Border border;
 	private boolean[] labelFlag = new boolean[imageLayers.chunks]; //already initialized to null (primitive type)
 	
 	void getterSetter() {
 		chunks = imageLayers.chunks;
-		labelsBlur = imageLayers.labelsBlur;
-		funcButton = imageLayers.funcButton;
+		System.out.println(chunks);
 		lpane = imageLayers.lpane;
+		System.out.println(imageLayers.imageLabels);
+		funcButton = imageLayers.funcButton;
+		imageLabels = imageLayers.imageLabels;
+		currLabel = randInt(0, chunks);
+		prevLabel = randInt(0, chunks);
 	}
 
 	public static int randInt(int min, int max) {
@@ -38,10 +42,15 @@ public class randomGlow implements ActionListener {
 	}
 	
 	void gameLoop() throws InterruptedException {
+		System.out.println(prevLabel);
+		System.out.println(currLabel);
+		
 		if(chances == 0)
 		{
-			funcButton.setText("No more guesses!");
-			funcButton.setEnabled(false);
+			/*funcButton.setText("No more guesses!");
+			funcButton.setEnabled(false);*/
+			System.out.println("Done!");
+			System.exit(0);
 		}
 		while (chances!=0)
 		{
@@ -49,14 +58,14 @@ public class randomGlow implements ActionListener {
 			{
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					lpane.setLayer(lpane.getComponent(currLabel), Integer.MAX_VALUE);
+					lpane.setLayer(lpane.getComponent(currLabel+16), Integer.MAX_VALUE);
 					labelFlag[currLabel] = true;
 					chances--;
 				}
 			});
 			
 			border = BorderFactory.createEmptyBorder();
-			labelsBlur[prevLabel].setBorder(border);
+			imageLabels[prevLabel].setBorder(border);
 			
 			currLabel = randInt(0, chunks - 1);
 			
@@ -68,7 +77,7 @@ public class randomGlow implements ActionListener {
 			Thread.sleep(speed);
 			//sleep is the milliseconds before skipping to next label
 			border = BorderFactory.createLineBorder(Color.blue);
-	        labelsBlur[currLabel].setBorder(border);	//only include those numbers which are false in labelFlag
+			imageLabels[currLabel].setBorder(border);	//only include those numbers which are false in labelFlag
 	        
 	        prevLabel = currLabel;
 		}
@@ -89,7 +98,7 @@ public class randomGlow implements ActionListener {
 			}
 		}).start();
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub

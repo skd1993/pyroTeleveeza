@@ -18,16 +18,13 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 public class imageLayers {
 
     static JFrame frame;
     static JButton funcButton;
-    static JLabel[] labelsTrue;
-    static JLabel[] labelsBlur;
-    static JPanel panel;
+    static JLabel[] imageLabels;
+    //static JPanel panel;
     static JLayeredPane lpane;
     static final String imagePathTrue = "/home/shobhit/Pictures/test.jpg";
     static final String imagePathBlur = "/home/shobhit/Pictures/test_blur.jpg";
@@ -38,61 +35,53 @@ public class imageLayers {
     static int chunkWidth;
     static int chunkHeight;
     static int z = 0;
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                new imageLayers().createAndShowUI();
-            }
-        });
-    }
-
-    private void createAndShowUI() {
+    //static int y = 30;
+    
+    public void createUI() {
         frame = new JFrame("Test");
         frame.setPreferredSize(new Dimension(1024, 680));
         //frame.getContentPane().setLayout(new GridLayout(rows, cols, SPACING, SPACING));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         lpane = new JLayeredPane();
         lpane.setPreferredSize(new Dimension(640, 425));
-        panel = new JPanel();
+        /*panel = new JPanel();
         panel.setPreferredSize(new Dimension(1024, 680));
         panel.setBackground(Color.red);
-        panel.setVisible(true);
-        lpane.add(panel, new Integer(Integer.MIN_VALUE), 0);
-        initComponents(imagePathTrue, lpane, labelsTrue);
-        initComponents(imagePathBlur, lpane, labelsBlur);
-        System.out.println(lpane.getComponents().length);
-        System.out.println(lpane.getComponent(1));//panel
-        //frame.getContentPane().add(funcButton);
+        panel.setVisible(false);
+        lpane.add(panel, new Integer(Integer.MIN_VALUE), 0);*/
+        
+        initComponents(imagePathTrue, lpane);
+        z++;
+        initComponents(imagePathBlur, lpane);
         frame.add(lpane);
         frame.setResizable(false);
         frame.pack();
         frame.setVisible(true);
     }
 
-    private void initComponents(String imagePath, JLayeredPane lpane, JLabel[] labels) {
+    private void initComponents(String imagePath, JLayeredPane lpane) {
+    	//y = 10;
     	BufferedImage[] imgs = getImages(imagePath);
-    	labels = new JLabel[imgs.length];
+    	imageLabels = new JLabel[imgs.length];
     	//create JLabels with split images and add to frame contentPane
         for (int i = 0; i < imgs.length; i++) {
-            labels[i] = new JLabel(new ImageIcon(Toolkit.getDefaultToolkit().createImage(imgs[i].getSource())));
+        	imageLabels[i] = new JLabel(new ImageIcon(Toolkit.getDefaultToolkit().createImage(imgs[i].getSource())));
         }
-        System.out.println(imgs.length);
+        //System.out.println(imgs.length);
         int j = 0;
         for (int i = 0; i < imgs.length; i++)
         {
-        	labels[i].setBounds((i%rows)*chunkWidth, (j++/cols)*chunkHeight, chunkWidth, chunkHeight);
-        	labels[i].setBackground(Color.blue);
-        	labels[i].setOpaque(true);//no change
+        	//System.out.println("i:"+i);
+        	imageLabels[i].setBounds((i%rows)*chunkWidth, (j++/cols)*chunkHeight, chunkWidth, chunkHeight);
+        	imageLabels[i].setBackground(Color.blue);
+        	imageLabels[i].setOpaque(true);//no change
         	
         	//labels[i].set
-        	lpane.add(labels[i], new Integer(z), 0);
+        	lpane.add(imageLabels[i], new Integer(z), 0);
         }
+        //System.out.println(z);
     }
     
-
     private BufferedImage[] getImages(String imagePath) {
         File file = new File(imagePath);
         FileInputStream fis = null;
@@ -109,8 +98,8 @@ public class imageLayers {
         }
         chunkWidth = image.getWidth() / cols; // determines the chunk width and height
         chunkHeight = image.getHeight() / rows;
-        System.out.println("chunkWidth: " +chunkWidth);
-    	System.out.println("chunkHeight: " +chunkHeight);
+        //System.out.println("chunkWidth: " +chunkWidth);
+    	//System.out.println("chunkHeight: " +chunkHeight);
         int count = 0;
         BufferedImage imgs[] = new BufferedImage[chunks]; //Image array to hold image chunks
         for (int x = 0; x < rows; x++) {
