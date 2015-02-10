@@ -3,7 +3,6 @@ package com.pyro.skd;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -14,19 +13,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 
 public class imageLayers {
 
     static JFrame frame;
+    static JButton funcButton;
     static JLabel[] labelsTrue;
     static JLabel[] labelsBlur;
     static JPanel panel;
@@ -53,24 +51,21 @@ public class imageLayers {
 
     private void createAndShowUI() {
         frame = new JFrame("Test");
+        frame.setPreferredSize(new Dimension(1024, 680));
         //frame.getContentPane().setLayout(new GridLayout(rows, cols, SPACING, SPACING));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         lpane = new JLayeredPane();
-        lpane.setPreferredSize(new Dimension(1024, 680));
+        lpane.setPreferredSize(new Dimension(640, 425));
         panel = new JPanel();
         panel.setPreferredSize(new Dimension(1024, 680));
-        panel.setLayout(new GridLayout(rows, cols));
-        panel.setBounds(0, 0, 1024, 680);
         panel.setBackground(Color.red);
         panel.setVisible(true);
         lpane.add(panel, new Integer(Integer.MIN_VALUE), 0);
-        
         initComponents(imagePathTrue, lpane, labelsTrue);
         initComponents(imagePathBlur, lpane, labelsBlur);
         System.out.println(lpane.getComponents().length);
-        System.out.println(lpane.getComponent(0));//panel
-        
-        //lpane.setLayer(lpane.getComponent(2), Integer.MAX_VALUE);
+        System.out.println(lpane.getComponent(1));//panel
+        //frame.getContentPane().add(funcButton);
         frame.add(lpane);
         frame.setResizable(false);
         frame.pack();
